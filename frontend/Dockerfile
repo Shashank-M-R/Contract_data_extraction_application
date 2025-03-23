@@ -5,11 +5,9 @@ FROM node:18
 WORKDIR /app
 
 # Copy package.json and install dependencies before copying other files
-COPY package.json package-lock.json ./
+COPY . .
 RUN npm install
 
-# Now copy the entire project (prevents cache invalidation)
-COPY . .
 
 # Build the React app
 RUN npm run build
