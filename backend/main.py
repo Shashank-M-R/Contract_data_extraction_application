@@ -41,13 +41,19 @@ def extract_contract_details(pdf_path):
 @app.post("/extract_contract/")
 async def extract_contract(file: UploadFile = File(...)):
     temp_file = f"temp_{file.filename}"
+    
     if not temp_file.endswith('.pdf'):
         raise HTTPException(status_code=400, detail="Invalid file format. Only PDFs are allowed.")
         
-    with open(temp_file, "wb") as buffer:
-        buffer.write(await file.read())
+    try:
+        with open(temp_file, "wb") as buffer:
+            buffer.write(await file.read())
 
-    extracted_data = extract_contract_details(temp_file)
+        extracted_data = extract_contract_details(temp_file)
+    
+    finally:
+        if os.path.exists(temp_file):
+            os.remove(temp_file)
     
     return json.dumps(extracted_data, indent=4)
 
