@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Build & Start Application') {
             steps {
-                sh 'docker-compose up --build'
+                sh 'sudo docker-compose up --build'
             }
         }
         stage('Testing Backend Docker') {
